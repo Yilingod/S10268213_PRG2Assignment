@@ -61,12 +61,12 @@ namespace HelloWorld
                     string[] data = line.Split('\t'); // Use comma as CSV separator
 
                     string gateCode = data[0]; 
-                    bool ddjb = bool.Parse(data[1]);
-                    bool cfft = bool.Parse(data[2]); 
-                    bool lwtt = bool.Parse(data[3]); 
+                    bool DDJB = bool.Parse(data[1]);
+                    bool CFFT = bool.Parse(data[2]); 
+                    bool LWTT = bool.Parse(data[3]); 
 
                     // Create a BoardingGate object and add it to the dictionary
-                    BoardingGate gate = new BoardingGate(gateCode, ddjb, cfft, lwtt);
+                    BoardingGate gate = new BoardingGate(gateCode, DDJB, CFFT, LWTT);
                     boardingGates[gateCode] = gate;
                 }
             }
