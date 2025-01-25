@@ -14,10 +14,12 @@ namespace S10268213_PRG2Assignment
         public Airline() { }
         public Airline(string name,string code,Dictionary<string,Flight> flights)
         {
-            Flights = flights;
             Name = name;
             Code = code;
+            Flights = flights;
         }
+
+
         public bool AddFlight(Flight flight)
         {
 
