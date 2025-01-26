@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//==========================================================
+// Student Number	: S10268213K
+// Student Name	: Gong Yilin
+// Partner Name	: Yang Ee Ming
+//==========================================================
 namespace S10268213_PRG2Assignment
 {
     class CFFTFlight : Flight
@@ -15,14 +19,14 @@ namespace S10268213_PRG2Assignment
         {
             RequestFee = 150;
         }
-        //    public override double CalculateFees()
-        //    {
-
-        //    }
+        public override double CalculateFees()
+        {
+            return base.CalculateFees() + RequestFee;
+        }
         //    public override string ToString()
         //    {
 
         //    }
-        
+
     }
 }

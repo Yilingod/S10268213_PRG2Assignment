@@ -4,7 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 namespace S10268213_PRG2Assignment
-{
+{//==========================================================
+ // Student Number	: S10268213K
+ // Student Name	: Gong Yilin
+ // Partner Name	: Yang Ee Ming
+ //==========================================================
     class LWTTFlight : Flight
     {
         public double RequestFee { get; set; }
@@ -13,16 +17,14 @@ namespace S10268213_PRG2Assignment
         {
             RequestFee = 500;
         }
-
-
-        //    public override double CalculateFees()
-        //    {
-
-        //    }
+        public override double CalculateFees()
+        {
+            return base.CalculateFees() + RequestFee;
+        }
         //    public override string ToString()
         //    {
 
         //    }
-        
+
     }
 }

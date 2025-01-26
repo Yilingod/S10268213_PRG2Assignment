@@ -3,7 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+//==========================================================
+// Student Number	: S10268213K
+// Student Name	: Gong Yilin
+// Partner Name	: Yang Ee Ming
+//==========================================================
 namespace S10268213_PRG2Assignment
 {
     abstract class Flight
@@ -24,7 +28,34 @@ namespace S10268213_PRG2Assignment
 
         }
         
-        //public abstract double CalculateFees();
+        public virtual double CalculateFees()
+        {
+            double fees = 0;
+            if (Origin == "Singapore (SIN)")
+            {
+                //Departure fee
+                fees += 800;
+            }
+            else
+            {
+                //Arriving fee
+                fees += 500;
+                if (Origin == "Dubai (DXB)" || Origin == "Bangkok (BKK)" || Origin == "Tokyo (NRT)")
+                {
+                    fees -= 25;
+                }
+            }
+
+            bool Before_11am = ExpectedTime < Convert.ToDateTime("11:00 am");
+            bool After_9pm = ExpectedTime > Convert.ToDateTime("9:00 am");
+            if (Before_11am || After_9pm )
+            {
+                fees -= 110;
+            }
+            return fees;
+        }
+
+
         //public override string ToString()
         //{
         //    return $"Flight Number:{FlightNumber}   Origin:{Origin}   Destination:{Destination}  Expected Time:{ExpectedTime}  Status:{Status}";

@@ -9,8 +9,11 @@ using System.Buffers.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 
-
-
+//==========================================================
+// Student Number	: S10268213K
+// Student Name	: Gong Yilin
+// Partner Name	: Yang Ee Ming
+//==========================================================
 
 namespace HelloWorld
 {
@@ -18,6 +21,7 @@ namespace HelloWorld
     {
         static void Main(string[] args)
         {
+
             // Loading in the spreadsheet
             Dictionary<string, Airline> airlines = LoadAirlines("airlines.csv");
             Dictionary<string, BoardingGate> boardingGates = LoadBoardingGates("boardinggates.csv");
@@ -29,41 +33,45 @@ namespace HelloWorld
             while (true)
             {
                 DisplayMenu();
-                int option = Convert.ToInt32(Console.ReadLine());
+                string? option = Console.ReadLine();
                 Console.WriteLine();
 
-                if (option == 1)
+                if (option == "1")
                 {
                     ListAllFlights(flights, airlines);
                 }
-                else if (option == 2)
+                else if (option == "2")
                 {
                     ;
                 }
-                else if (option == 3)
+                else if (option == "3")
                 {
                     ;
 
                 }
-                else if (option == 4)
+                else if (option == "4")
                 {
                     ;
                 }
-                else if(option == 5)
+                else if(option == "5")
                 {
                     ;
                 }
-                else if (option == 6)
+                else if (option == "6")
                 {
                     ;
                 }
-                else if (option == 7)
+                else if (option == "7")
                 {
                     ;
                 }
-                else if(option == 0)
+                else if(option == "0")
                 {
                     break;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid input, please enter again.");
                 }
 
             }
