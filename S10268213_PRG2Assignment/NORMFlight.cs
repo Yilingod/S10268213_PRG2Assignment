@@ -6,21 +6,22 @@ using System.Threading.Tasks;
 
 namespace S10268213_PRG2Assignment
 {
-    //class NORMFlight : Flight
-    //{
-    //    public NORMFlight() : base() { }
-    //    public NORMFlight(string flightnumber, string origin, string destination, DateTime expectedtime, string status) : base(flightnumber, origin, destination, expectedtime, status)
-    //    {
+    class NORMFlight : Flight
+    {
+        public NORMFlight() : base() { }
+        public NORMFlight(string flightnumber, string origin, string destination, DateTime expectedtime) : base(flightnumber, origin, destination, expectedtime)
+        {
 
-    //    }
-    //    public override double CalculateFees()
-    //    {
+        }
+        //    public override double CalculateFees()
+        //    {
 
-    //    }
-    //    public override string ToString()
-    //    {
+        //    }
+        //    public override string ToString()
+        //    {
 
-    //    }
+        //    }
 
-    //}
+        
+    }
 }

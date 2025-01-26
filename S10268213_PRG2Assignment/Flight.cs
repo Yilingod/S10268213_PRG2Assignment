@@ -14,19 +14,20 @@ namespace S10268213_PRG2Assignment
         public DateTime ExpectedTime { get; set; }
         public string Status { get; set; }
         public Flight() { }
-        public Flight(string flightnumber,string origin,string destination,DateTime expectedtime,string status)
+        public Flight(string flightnumber,string origin,string destination,DateTime expectedtime)
         {
-            this.FlightNumber = flightnumber;
-            this.Origin = origin;
-            this.Destination = destination;
-            this.ExpectedTime = expectedtime;
-            this.Status = status;
+            FlightNumber = flightnumber;
+            Origin = origin;
+            Destination = destination;
+            ExpectedTime = expectedtime;
+            Status = "Scheduled";
 
         }
-        public abstract double CalculateFees();
-        public override string ToString()
-        {
-            return $"Flight Number:{FlightNumber}   Origin:{Origin}   Destination:{Destination}  Expected Time:{ExpectedTime}  Status:{Status}";
-        }
+        
+        //public abstract double CalculateFees();
+        //public override string ToString()
+        //{
+        //    return $"Flight Number:{FlightNumber}   Origin:{Origin}   Destination:{Destination}  Expected Time:{ExpectedTime}  Status:{Status}";
+        //}
     }
 }
