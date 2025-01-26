@@ -24,14 +24,14 @@ namespace S10268213_PRG2Assignment
             GateFees = gateFees;
 
         }
-        public bool AddAirline(Airline airline)
-        {
+        //public bool AddAirline(Airline airline)
+        //{
 
-        }
-        public bool AddBoardingGate()
-        {
+        //}
+        //public bool AddBoardingGate()
+        //{
 
-        }
+        //}
 
     }
 }

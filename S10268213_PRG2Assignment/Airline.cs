@@ -10,32 +10,32 @@ namespace S10268213_PRG2Assignment
     {
         public string Name { get; set; }
         public string Code { get; set; }
-        public Dictionary<string,Flight> Flights { get; set; }
+        public Dictionary<string,Flight> Flights { get; set; } = new Dictionary<string,Flight>();
         public Airline() { }
-        public Airline(string name,string code,Dictionary<string,Flight> flights)
+        public Airline(string name,string code)
         {
             Name = name;
             Code = code;
-            Flights = flights;
+            
         }
 
 
-        public bool AddFlight(Flight flight)
-        {
+        //public bool AddFlight(Flight flight)
+        //{
 
-        }
-        public double CalculateFees()
-        {
+        //}
+        //public double CalculateFees()
+        //{
 
-        }
-        public bool RemoveFlight(Flight flight)
-        {
+        //}
+        //public bool RemoveFlight(Flight flight)
+        //{
 
-        }
-        public override string ToString()
-        {
+        //}
+        //public override string ToString()
+        //{
 
-        }
+        //}
 
 
     }
