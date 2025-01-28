@@ -30,6 +30,8 @@ namespace HelloWorld
             Console.WriteLine();
             Console.WriteLine();
 
+            boardingGates["A1"].Flight = flights["SQ 115"];
+
             while (true)
             {
                 DisplayMenu();
@@ -42,7 +44,7 @@ namespace HelloWorld
                 }
                 else if (option == "2")
                 {
-                    ;
+                    DisplayBoaardingGates(boardingGates);
                 }
                 else if (option == "3")
                 {
@@ -82,11 +84,17 @@ namespace HelloWorld
             Console.WriteLine("=============================================");
             Console.WriteLine("List of Boarding Gates for Changi Airport Terminal 5");
             Console.WriteLine("=============================================");
-            Console.WriteLine($"{"Gate Name", -12}{"DDJB", -10}{"CFFT", -10}{"LWTT"}");
+            Console.WriteLine($"{"Gate Name", -15}{"DDJB", -12}{"CFFT", -12}{"LWTT",-12}{"Flight Assigned"}");
 
             foreach (BoardingGate gate in boardingGates.Values)
             {
-                Console.WriteLine($"{gate.GateName, -12}{gate.SupportDDJB, -10}{gate.SupportsCFFT, -10}{gate.SupportLWTT}");
+                string? flightNo = null;
+                if (gate.Flight is Flight)
+                {
+                    flightNo = gate.Flight.FlightNumber;
+                }
+
+                Console.WriteLine($"{gate.GateName, -15}{gate.SupportDDJB, -12}{gate.SupportsCFFT, -12}{gate.SupportLWTT,-12}{flightNo}");
             }
 
 
