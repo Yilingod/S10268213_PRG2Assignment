@@ -77,6 +77,20 @@ namespace HelloWorld
             }
             
         }
+        static void DisplayBoaardingGates(Dictionary<string, BoardingGate> boardingGates)
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Boarding Gates for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"{"Gate Name", -12}{"DDJB", -10}{"CFFT", -10}{"LWTT"}");
+
+            foreach (BoardingGate gate in boardingGates.Values)
+            {
+                Console.WriteLine($"{gate.GateName, -12}{gate.SupportDDJB, -10}{gate.SupportsCFFT, -10}{gate.SupportLWTT}");
+            }
+
+
+        }
         static void ListAllFlights(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
             Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-25}{"Destination",-22}{"Expected Departure/Arrival Time"}");
