@@ -13,17 +13,17 @@ namespace S10268213_PRG2Assignment
     class BoardingGate
     {
         public string GateName { get; set; }
-        public bool SupportsCFFT { get; set; }
         public bool SupportDDJB { get; set; }
+        public bool SupportsCFFT { get; set; }
         public bool SupportLWTT { get; set; }
         public Flight Flight { get; set; } = null;
         public BoardingGate() { }
-        public BoardingGate(string gatename,bool scfft,bool sddjb,bool slwtt)
+        public BoardingGate(string gatename, bool sddjb, bool scfft,bool slwtt)
         {
             GateName = gatename;
             SupportDDJB = sddjb;
-            SupportLWTT = slwtt;
             SupportsCFFT = scfft;
+            SupportLWTT = slwtt;
 
         }
         //public double CalculateFees()
