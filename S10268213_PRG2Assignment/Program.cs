@@ -62,7 +62,7 @@ namespace HelloWorld
                 }
                 else if (option == "5")
                 {
-                    
+                    ;
                 }
                 else if (option == "6")
                 {
@@ -86,6 +86,7 @@ namespace HelloWorld
         {
             public InvalidInputException(string message) : base(message) { }
         }
+        
         static void AssignFlightToAirline(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
             Console.WriteLine("Assigning Flights to corresponding Airline...");
