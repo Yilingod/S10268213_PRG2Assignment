@@ -27,13 +27,13 @@ namespace HelloWorld
             Dictionary<string, Airline> airlines = LoadAirlines("airlines.csv");
             Dictionary<string, BoardingGate> boardingGates = LoadBoardingGates("boardinggates.csv");
             Dictionary<string, Flight> flights = LoadFlights("flights.csv");
+            AssignFlightToAirline(flights, airlines);
+
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine();
 
             boardingGates["A1"].Flight = flights["SQ 115"];
-
-            
 
             while (true)
             {
@@ -62,7 +62,7 @@ namespace HelloWorld
                 }
                 else if (option == "5")
                 {
-                    DisplayAirlineFlights();
+                    
                 }
                 else if (option == "6")
                 {
@@ -86,13 +86,22 @@ namespace HelloWorld
         {
             public InvalidInputException(string message) : base(message) { }
         }
-        static void DisplayAirlineFlights()
+        static void AssignFlightToAirline(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
-            Console.WriteLine("=============================================");
-            Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
-            Console.WriteLine("=============================================");
-            Console.WriteLine();
-
+            Console.WriteLine("Assigning Flights to corresponding Airline...");
+            foreach ( Airline airline in airlines.Values)
+            {
+                
+                foreach (Flight flight in flights.Values)
+                {
+                    string airlineCode = flight.FlightNumber.Substring(0, 2);
+                    if (airlineCode == airline.Code)
+                    {
+                        airline.Flights[flight.FlightNumber] = flight;
+                    }
+                }
+            }
+            Console.WriteLine("Finished Assigning.");
             
         }
         static void CreateNewFlight(Dictionary<string, Flight> flights)
@@ -196,7 +205,6 @@ namespace HelloWorld
 
             try
             {
-
 
                 Console.Write("Enter Flight Number: ");
                 string FlightNo = Console.ReadLine();
