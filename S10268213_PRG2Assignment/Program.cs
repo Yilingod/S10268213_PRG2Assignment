@@ -33,6 +33,8 @@ namespace HelloWorld
 
             boardingGates["A1"].Flight = flights["SQ 115"];
 
+            
+
             while (true)
             {
                 
@@ -60,7 +62,7 @@ namespace HelloWorld
                 }
                 else if (option == "5")
                 {
-                    ;
+                    DisplayAirlineFlights();
                 }
                 else if (option == "6")
                 {
@@ -83,6 +85,15 @@ namespace HelloWorld
         public class InvalidInputException : Exception
         {
             public InvalidInputException(string message) : base(message) { }
+        }
+        static void DisplayAirlineFlights()
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine();
+
+            
         }
         static void CreateNewFlight(Dictionary<string, Flight> flights)
         {
@@ -141,7 +152,7 @@ namespace HelloWorld
                     flights[FlightNo] = NewFlight;
                     using (StreamWriter writer = new StreamWriter("flights.csv",append:true))
                     {
-                        writer.WriteLine($"{FlightNo},{origin},{destination},{expectedTime}{requestCode}");
+                        writer.WriteLine($"{FlightNo},{origin},{destination},{expectedTime},{requestCode}");
                     }
                     Console.WriteLine($"Flight {FlightNo} has been added!");
                     Console.WriteLine();
