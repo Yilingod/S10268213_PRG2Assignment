@@ -8,6 +8,7 @@ using S10268213_PRG2Assignment;
 using System.Buffers.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
+using Microsoft.VisualBasic;
 
 //==========================================================
 // Student Number	: S10268213K
@@ -34,6 +35,7 @@ namespace HelloWorld
 
             while (true)
             {
+                
                 DisplayMenu();
                 string? option = Console.ReadLine();
                 Console.WriteLine();
@@ -44,18 +46,19 @@ namespace HelloWorld
                 }
                 else if (option == "2")
                 {
-                    DisplayBoaardingGates(boardingGates);
+                    DisplayBoardingGates(boardingGates);
                 }
                 else if (option == "3")
                 {
-                    AssignBoardingGate(boardingGates,flights);
+                    AssignBoardingGate(boardingGates, flights);
 
                 }
                 else if (option == "4")
                 {
-                    ;
+                    CreateNewFlight(flights);
+                        
                 }
-                else if(option == "5")
+                else if (option == "5")
                 {
                     ;
                 }
@@ -67,7 +70,7 @@ namespace HelloWorld
                 {
                     ;
                 }
-                else if(option == "0")
+                else if (option == "0")
                 {
                     break;
                 }
@@ -75,13 +78,103 @@ namespace HelloWorld
                 {
                     Console.WriteLine("Invalid input, please enter again.");
                 }
-
             }
-            
         }
-        public class AlreadyAssignedException : Exception
+        public class InvalidInputException : Exception
         {
-            public AlreadyAssignedException(string message) : base(message) { }
+            public InvalidInputException(string message) : base(message) { }
+        }
+        static void CreateNewFlight(Dictionary<string, Flight> flights)
+        {
+            while (true)
+            {
+                Console.WriteLine("=============================================");
+                Console.WriteLine("Create a new flight");
+                Console.WriteLine("=============================================");
+                Console.WriteLine();
+
+                try
+                {
+                    Console.Write("Enter Flight Number: ");
+                    string FlightNo = Console.ReadLine();
+
+                    if (flights.ContainsKey(FlightNo))
+                    {
+                        throw new InvalidInputException($"Flight number '{FlightNo}' already exist.");
+                    }
+
+                    Console.Write("Enter Origin: ");
+                    string origin = Console.ReadLine();
+
+                    Console.Write("Enter Destination: ");
+                    string destination = Console.ReadLine();
+
+                    Console.Write("Enter Expected Departure/Arrival Time (dd/mm/yyyy hh:mm): ");
+                    DateTime expectedTime = Convert.ToDateTime(Console.ReadLine());
+
+                    Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
+                    string requestCode = Console.ReadLine();
+
+                    Flight NewFlight;
+                    if (requestCode == "DDJB")
+                    {
+                        NewFlight = new DDJBFlight(FlightNo, origin, destination, expectedTime);
+                    }
+                    else if (requestCode == "CFFT")
+                    {
+                        NewFlight = new CFFTFlight(FlightNo, origin, destination, expectedTime);
+                    }
+                    else if (requestCode == "LWTT")
+                    {
+                        NewFlight = new LWTTFlight(FlightNo, origin, destination, expectedTime);
+                    }
+                    else if(requestCode == "None")
+                    {
+                        NewFlight = new NORMFlight(FlightNo, origin, destination, expectedTime);
+                        requestCode = null;
+                    }
+                    else
+                    {
+                        throw new InvalidInputException($"Invalid input, please enter correct special request code. ");
+                    }
+
+                    flights[FlightNo] = NewFlight;
+                    using (StreamWriter writer = new StreamWriter("flights.csv",append:true))
+                    {
+                        writer.WriteLine($"{FlightNo},{origin},{destination},{expectedTime}{requestCode}");
+                    }
+                    Console.WriteLine($"Flight {FlightNo} has been added!");
+                    Console.WriteLine();
+                    Console.Write("Would you like to add another flight? (Y/N): ");
+                    string AddAnother = Console.ReadLine();
+
+                    if (AddAnother == "Y")
+                    {
+                        ;
+                    }
+                    else if (AddAnother == "N")
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid input, please enter again.");
+                    }
+                }
+                catch (InvalidInputException ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Error: Invalid format entered.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                }
+            }
+
         }
         static void AssignBoardingGate(Dictionary<string, BoardingGate> boardingGates, Dictionary<string, Flight> flights)
         {
@@ -89,6 +182,7 @@ namespace HelloWorld
             Console.WriteLine("Assign a Boarding Gate to a Flight");
             Console.WriteLine("=============================================");
             Console.WriteLine();
+
             try
             {
 
@@ -99,7 +193,7 @@ namespace HelloWorld
                 if (!flights.ContainsKey(FlightNo))
                 {
                     throw new KeyNotFoundException($"Flight number '{FlightNo}' does not exist.");
-                    
+
                 }
 
                 Console.Write("Enter Boarding Gate Name: ");
@@ -110,13 +204,10 @@ namespace HelloWorld
                     throw new KeyNotFoundException($"Boarding gate '{GateName}' does not exist.");
 
                 }
-                else
+                else if (boardingGates[GateName].Flight is not null)
                 {
-                    if (boardingGates[GateName].Flight is not null)
-                    {
-                        throw new AlreadyAssignedException($"Boarding gate '{GateName}' is already assigned to flight {boardingGates[GateName].Flight.FlightNumber}.");
-                    }
 
+                    throw new InvalidInputException($"Boarding gate '{GateName}' is already assigned to flight {boardingGates[GateName].Flight.FlightNumber}.");
                 }
                 Flight flightAssigned = flights[FlightNo];
 
@@ -136,7 +227,7 @@ namespace HelloWorld
                 {
                     requestcode = "CFFT";
                 }
-                else if(flightAssigned is LWTTFlight)
+                else if (flightAssigned is LWTTFlight)
                 {
                     requestcode = "LWTT";
                 }
@@ -151,8 +242,6 @@ namespace HelloWorld
 
                 while (true)
                 {
-
-
                     Console.Write("Would you like to update the status of the flight? (Y/N):");
 
                     string? comfirm = Console.ReadLine();
@@ -164,26 +253,25 @@ namespace HelloWorld
                         Console.Write("Please select the new status of the flight?: ");
                         string? choice = Console.ReadLine();
 
-                        
                         if (choice == "1")
                         {
                             waitingGate.Flight.Status = "Delayed";
+                            Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
                         }
                         else if (choice == "2")
                         {
                             waitingGate.Flight.Status = "Boarding";
+                            Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
                         }
                         else if (choice == "3")
                         {
                             waitingGate.Flight.Status = "On Time";
+                            Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
                         }
                         else
                         {
-                            Console.WriteLine("Invalid input, please enter again.");
+                            Console.WriteLine($"Invalid input,Please enter number 1 to 3.");
                         }
-
-                        Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
-
                     }
                     else if (comfirm == "N")
                     {
@@ -194,9 +282,8 @@ namespace HelloWorld
                         Console.WriteLine("Invalid input, please enter again.");
                     }
                 }
-
             }
-            catch (AlreadyAssignedException ex)
+            catch (InvalidInputException ex)
             {
                 Console.WriteLine($"Error: {ex.Message}");
             }
@@ -212,10 +299,8 @@ namespace HelloWorld
             {
                 Console.WriteLine($"An unexpected error occurred: {ex.Message}");
             }
-
-
         }
-        static void DisplayBoaardingGates(Dictionary<string, BoardingGate> boardingGates)
+        static void DisplayBoardingGates(Dictionary<string, BoardingGate> boardingGates)
         {
             Console.WriteLine("=============================================");
             Console.WriteLine("List of Boarding Gates for Changi Airport Terminal 5");
