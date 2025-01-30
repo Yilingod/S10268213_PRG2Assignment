@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 //==========================================================
 namespace S10268213_PRG2Assignment
 {
-    abstract class Flight
+    abstract class Flight : IComparable<Flight>
     {
         public string FlightNumber { get; set; }
         public string Origin { get; set; }
@@ -27,7 +27,11 @@ namespace S10268213_PRG2Assignment
             Status = "Scheduled";
 
         }
-        
+        public int CompareTo(Flight other)
+        {
+            return this.ExpectedTime.CompareTo(other.ExpectedTime); // Descending order
+        }
+
         public virtual double CalculateFees()
         {
             double fees = 0;
