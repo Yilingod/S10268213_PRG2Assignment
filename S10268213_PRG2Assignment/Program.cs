@@ -9,6 +9,7 @@ using System.Buffers.Text;
 using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Microsoft.VisualBasic;
+using System.Collections.Immutable;
 
 //==========================================================
 // Student Number	: S10268213K
@@ -70,7 +71,7 @@ namespace HelloWorld
                 }
                 else if (option == "7")
                 {
-                    ;
+                    DisplayFlightSchedule(flights,airlines,boardingGates);
                 }
                 else if (option == "0")
                 {
@@ -86,7 +87,43 @@ namespace HelloWorld
         {
             public InvalidInputException(string message) : base(message) { }
         }
-        
+        static void DisplayFlightSchedule(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines, Dictionary<string, BoardingGate> boardingGates)
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("Flight Schedule for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine();
+
+            Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-25}{"Destination",-22}{"Expected Departure/Arrival Time",-37}" +
+                $"{"Status",-20}{"Boarding Gate"}");
+            Console.WriteLine();
+
+            //var sortedDict = flights
+            //.OrderBy(pair => (Flight)pair.Value) // Uses CompareTo method in MyObject
+            //.ToDictionary(pair => pair.Key, pair => pair.Value);
+
+            List<Flight> FlightList = new List<Flight>(flights.Values);
+            FlightList.Sort();
+
+            foreach (Flight flight in FlightList)
+            {
+                string airlineCode = flight.FlightNumber.Substring(0, 2);
+                string Time = flight.ExpectedTime.ToString();
+
+                string GateStatus = "Unassigned";
+                foreach (BoardingGate gate in boardingGates.Values)
+                {
+                    if (gate.Flight == flight)
+                    {
+                        GateStatus = gate.GateName;
+                    }
+                }
+
+                Console.WriteLine($"{flight.FlightNumber,-15}{airlines[airlineCode].Name,-25}{flight.Origin,-25}{flight.Destination,-22}" +
+                    $"{Time,-35}{flight.Status,-20}{GateStatus}");
+            }
+            Console.WriteLine();
+        }
         static void AssignFlightToAirline(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
             Console.WriteLine("Assigning Flights to corresponding Airline...");
