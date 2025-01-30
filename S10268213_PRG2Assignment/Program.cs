@@ -67,7 +67,7 @@ namespace HelloWorld
                 }
                 else if (option == "6")
                 {
-                    ;
+                    ModifyFlightDetails(airlines);
                 }
                 else if (option == "7")
                 {
@@ -143,6 +143,131 @@ namespace HelloWorld
             
         }
 
+        static void ModifyFlightDetails(Dictionary<string, Airline> airlines)
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine();
+
+            Console.WriteLine($"{"Airline Code",-15}{"Airline Name"}");
+            foreach (Airline airline in airlines.Values)
+            {
+                Console.WriteLine($"{airline.Code,-15}{airline.Name}");
+            }
+            Console.Write("Enter Airline Code: ");
+            string AirlineCode = Console.ReadLine();
+
+            Console.WriteLine("=============================================");
+            Console.WriteLine($"List of Flights for {airlines[AirlineCode].Name}");
+            Console.WriteLine("=============================================");
+
+            Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-25}{"Destination",-22}{"Expected Departure/Arrival Time"}");
+            Console.WriteLine();
+
+            foreach (Flight flight in airlines[AirlineCode].Flights.Values)
+            {
+                Console.WriteLine($"{flight.FlightNumber,-15}{airlines[AirlineCode].Name,-25}{flight.Origin,-25}" +
+                    $"{flight.Destination,-22}{flight.ExpectedTime}");
+
+            }
+
+            Console.Write("Choose an existing Flight to modify or delete: ");
+            string flightNumber = Console.ReadLine().ToUpper();
+
+            if (!airlines[AirlineCode].Flights.ContainsKey(flightNumber))
+            {
+                Console.WriteLine("Invalid Flight Number. Returning to menu.");
+                return;
+            }
+
+            Console.WriteLine("1. Modify Flight");
+            Console.WriteLine("2. Delete Flight");
+            Console.Write("Choose an option: ");
+            string option = Console.ReadLine();
+
+            if (option == "1")
+            {
+                ModifyFlight(airlines[AirlineCode].Flights[flightNumber], airlines[AirlineCode].Name);
+            }
+            else if (option == "2")
+            {
+                DeleteFlight(airlines[AirlineCode].Flights, flightNumber);
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Returning to menu.");
+            }
+
+        }
+
+        static void ModifyFlight(Flight flight, string airlineName)
+        {
+            Console.WriteLine("\n1. Modify Basic Information");
+            Console.WriteLine("2. Modify Status");
+            Console.WriteLine("3. Modify Special Request Code");
+            Console.WriteLine("4. Modify Boarding Gate");
+            Console.Write("Choose an option: ");
+            string option = Console.ReadLine();
+
+            if (option == "1")
+            {
+                Console.Write("Enter new Origin: ");
+                flight.Origin = Console.ReadLine();
+                Console.Write("Enter new Destination: ");
+                flight.Destination = Console.ReadLine();
+                Console.Write("Enter new Expected Departure/Arrival Time (dd/MM/yyyy HH:mm): ");
+                flight.ExpectedTime = DateTime.Parse(Console.ReadLine());
+            }
+            else if (option == "2")
+            {
+                Console.Write("Enter new Status (On Time, Delayed, Boarding): ");
+                flight.Status = Console.ReadLine();
+            }
+            else if (option == "3")
+            {
+                Console.Write("Enter new Special Request Code (CFFT/DDJB/LWTT or nil): ");
+                string specialRequest = Console.ReadLine();
+            }
+            else if (option == "4")
+            {
+                Console.Write("Enter new Boarding Gate (or unassigned): ");
+                string BoardingGate = Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("Invalid option. Returning to menu.");
+                return;
+            }
+
+            Console.WriteLine("\nFlight updated!");
+            Console.WriteLine($"Flight Number: {flight.FlightNumber}");
+            Console.WriteLine($"Airline Name: {airlineName}");
+            Console.WriteLine($"Origin: {flight.Origin}");
+            Console.WriteLine($"Destination: {flight.Destination}");
+            Console.WriteLine($"Expected Departure/Arrival Time: {flight.ExpectedTime}");
+            Console.WriteLine($"Status: {flight.Status}");
+            Console.WriteLine($"Special Request Code: ");
+            Console.WriteLine($"Boarding Gate: Unassigned");
+        }
+
+        static void DeleteFlight(Dictionary<string, Flight> flights, string flightNumber)
+        {
+            Console.Write("Are you sure you want to delete this flight? (Y/N): ");
+            string answer = Console.ReadLine().ToUpper();
+
+            if (answer == "Y")
+            {
+                flights.Remove(flightNumber);
+                Console.WriteLine("Flight deleted successfully!");
+            }
+            else
+            {
+                Console.WriteLine("Deletion cancelled.");
+            }
+        }
+
+
         static void DisplayAirlineFlights(Dictionary<string, Airline> airlines)
         {
             Console.WriteLine("=============================================");
@@ -159,7 +284,7 @@ namespace HelloWorld
             string AirlineCode = Console.ReadLine();
 
             Console.WriteLine("=============================================");
-            Console.WriteLine("List of Flights for Singapore Airlines");
+            Console.WriteLine($"List of Flights for {airlines[AirlineCode].Name}");
             Console.WriteLine("=============================================");
 
             Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-25}{"Destination",-22}{"Expected Departure/Arrival Time"}");
