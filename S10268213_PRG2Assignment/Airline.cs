@@ -24,10 +24,20 @@ namespace S10268213_PRG2Assignment
         }
 
 
-        //public bool AddFlight(Flight flight)
-        //{
-
-        //}
+        public bool AddFlight(Flight flight)
+        {
+            if (flight.AirlineCode == Code)
+            {
+                if (!Flights.ContainsValue(flight))
+                {
+                    Flights[flight.FlightNumber] = flight;
+                    return true;
+                }
+                
+            }
+            return false;
+            
+        }
         //public double CalculateFees()
         //{
 

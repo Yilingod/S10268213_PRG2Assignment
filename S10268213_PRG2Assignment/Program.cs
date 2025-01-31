@@ -64,7 +64,7 @@ namespace HelloWorld
                 else if (option == "4")
                 {
                     //6) Create a new flight
-                    CreateNewFlight(flights);
+                    CreateNewFlight(flights,airlines);
                         
                 }
                 else if (option == "5")
@@ -247,17 +247,10 @@ namespace HelloWorld
         static void AssignFlightToAirline(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
             Console.WriteLine("Assigning Flights to corresponding Airline...");
-            foreach ( Airline airline in airlines.Values)
+            foreach (Flight flight in flights.Values)
             {
                 
-                foreach (Flight flight in flights.Values)
-                {
-                    
-                    if (flight.AirlineCode == airline.Code)
-                    {
-                        airline.Flights[flight.FlightNumber] = flight;
-                    }
-                }
+                airlines[flight.AirlineCode].AddFlight(flight);
             }
             Console.WriteLine("Finished Assigning.");
             
@@ -295,7 +288,7 @@ namespace HelloWorld
 
         }
 
-        static void CreateNewFlight(Dictionary<string, Flight> flights)
+        static void CreateNewFlight(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines)
         {
             while (true)
             {
@@ -306,6 +299,8 @@ namespace HelloWorld
 
                 try
                 {
+                    // In this Question, I assume that the user will enter the
+                    // correct format of flight number,origin and destination
                     Console.Write("Enter Flight Number: ");
                     string FlightNo = Console.ReadLine();
 
@@ -325,6 +320,8 @@ namespace HelloWorld
 
                     Console.Write("Enter Special Request Code (CFFT/DDJB/LWTT/None): ");
                     string requestCode = Console.ReadLine();
+
+                    //Create corresponding type of flight base on the request code given.
 
                     Flight NewFlight;
                     if (requestCode == "DDJB")
@@ -351,6 +348,10 @@ namespace HelloWorld
                     }
 
                     flights[FlightNo] = NewFlight;
+
+                    airlines[NewFlight.AirlineCode].AddFlight(NewFlight);
+                    
+                    // Adding to the csv file
                     using (StreamWriter writer = new StreamWriter("flights.csv",append:true))
                     {
                         writer.WriteLine($"{FlightNo},{origin},{destination},{expectedTime},{requestCode}");
@@ -395,108 +396,114 @@ namespace HelloWorld
             Console.WriteLine("=============================================");
             Console.WriteLine();
 
-            try
+            while (true)
             {
 
-                Console.Write("Enter Flight Number: ");
-                string FlightNo = Console.ReadLine();
-
-                if (!flights.ContainsKey(FlightNo))
-                {
-                    throw new KeyNotFoundException($"Flight number '{FlightNo}' does not exist.");
-
-                }
-
-                Flight flightAssigned = flights[FlightNo];
-                Console.WriteLine($"Flight Number: {flightAssigned.FlightNumber}");
-                Console.WriteLine($"Origin: {flightAssigned.Origin}");
-                Console.WriteLine($"Destination: {flightAssigned.Destination}");
-                Console.WriteLine($"Expected Time: {flightAssigned.ExpectedTime}");
-                Console.WriteLine($"Special Request Code: {flights[FlightNo].SpecialRequestCode}");
-
-                Console.Write("Enter Boarding Gate Name: ");
-                string GateName = Console.ReadLine();
-
-                if (!boardingGates.ContainsKey(GateName))
-                {
-                    throw new KeyNotFoundException($"Boarding gate '{GateName}' does not exist.");
-
-                }
-                else if (boardingGates[GateName].Flight is not null)
+                try
                 {
 
-                    throw new InvalidInputException($"Boarding gate '{GateName}' is already assigned to flight {boardingGates[GateName].Flight.FlightNumber}.");
-                }
+                    Console.Write("Enter Flight Number: ");
+                    string FlightNo = Console.ReadLine();
 
-                BoardingGate boardingGateassign = boardingGates[GateName];
-
-                BoardingGate waitingGate = boardingGates[GateName];
-                Console.WriteLine($"Boarding Gate Name: {waitingGate.GateName}");
-                Console.WriteLine($"Supports DDJB: {waitingGate.SupportDDJB}");
-                Console.WriteLine($"Supports CFFT: {waitingGate.SupportsCFFT}");
-                Console.WriteLine($"Supports LWTT: {waitingGate.SupportLWTT}");
-                Console.WriteLine();
-
-               
-                Console.Write("Would you like to update the status of the flight? (Y/N):");
-
-                string? comfirm = Console.ReadLine();
-                if (comfirm == "Y")
-                {
-                    Console.WriteLine("1. Delayed");
-                    Console.WriteLine("2. Boarding");
-                    Console.WriteLine("3. On Time");
-                    Console.Write("Please select the new status of the flight?: ");
-                    string? choice = Console.ReadLine();
-
-                    if (choice == "1")
+                    if (!flights.ContainsKey(FlightNo))
                     {
-                        flights[FlightNo].Status = "Delayed";
+                        throw new KeyNotFoundException($"Flight number '{FlightNo}' does not exist.");
+
                     }
-                    else if (choice == "2")
+
+                    Flight flightAssigned = flights[FlightNo];
+                    Console.WriteLine($"Flight Number: {flightAssigned.FlightNumber}");
+                    Console.WriteLine($"Origin: {flightAssigned.Origin}");
+                    Console.WriteLine($"Destination: {flightAssigned.Destination}");
+                    Console.WriteLine($"Expected Time: {flightAssigned.ExpectedTime}");
+                    Console.WriteLine($"Special Request Code: {flights[FlightNo].SpecialRequestCode}");
+
+                    Console.Write("Enter Boarding Gate Name: ");
+                    string GateName = Console.ReadLine();
+
+                    if (!boardingGates.ContainsKey(GateName))
                     {
-                        flights[FlightNo].Status = "Boarding";
-                         
+                        throw new KeyNotFoundException($"Boarding gate '{GateName}' does not exist.");
+
                     }
-                    else if (choice == "3")
+                    else if (boardingGates[GateName].Flight is not null)
                     {
-                        flights[FlightNo].Status = "On Time";
+
+                        throw new InvalidInputException($"Boarding gate '{GateName}' is already assigned to flight {boardingGates[GateName].Flight.FlightNumber}.");
+                    }
+
+                    BoardingGate boardingGateassign = boardingGates[GateName];
+
+                    BoardingGate waitingGate = boardingGates[GateName];
+                    Console.WriteLine($"Boarding Gate Name: {waitingGate.GateName}");
+                    Console.WriteLine($"Supports DDJB: {waitingGate.SupportDDJB}");
+                    Console.WriteLine($"Supports CFFT: {waitingGate.SupportsCFFT}");
+                    Console.WriteLine($"Supports LWTT: {waitingGate.SupportLWTT}");
+                    Console.WriteLine();
+
+                    // Allow the user to change the status of flight
+                    Console.Write("Would you like to update the status of the flight? (Y/N):");
+                    string? comfirm = Console.ReadLine();
+                    if (comfirm == "Y")
+                    {
+                        Console.WriteLine("1. Delayed");
+                        Console.WriteLine("2. Boarding");
+                        Console.WriteLine("3. On Time");
+                        Console.Write("Please select the new status of the flight?: ");
+                        string? choice = Console.ReadLine();
+
+                        if (choice == "1")
+                        {
+                            flights[FlightNo].Status = "Delayed";
+                        }
+                        else if (choice == "2")
+                        {
+                            flights[FlightNo].Status = "Boarding";
+
+                        }
+                        else if (choice == "3")
+                        {
+                            flights[FlightNo].Status = "On Time";
+                        }
+                        else
+                        {
+                            throw new InvalidInputException($"Input of {choice} is invalid, please enter again.");
+
+                        }
+
+                    }
+                    else if (comfirm == "N")
+                    {
+                        ;
                     }
                     else
                     {
-                        throw new InvalidInputException($"Input of {choice} is invalid, please enter again.");
-
+                        throw new InvalidInputException($"Invalid input, please enter again.");
                     }
-                   
-                }
-                else if (comfirm == "N")
-                {
-                    ;
-                }
-                else
-                {
-                    throw new InvalidInputException($"Invalid input, please enter again.");
-                }
-                Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
-                boardingGates[GateName].Flight = flightAssigned;
-                flights[FlightNo].BoardingGateAssigned = boardingGateassign;
+                    Console.WriteLine($"Flight {FlightNo} has been assigned to Boarding Gate {GateName}!");
+                    boardingGates[GateName].Flight = flightAssigned;
+                    flights[FlightNo].BoardingGateAssigned = boardingGateassign;
 
-            }
-            catch (InvalidInputException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            catch (KeyNotFoundException ex)
-            {
-                Console.WriteLine($"Error: {ex.Message}");
-            }
-            catch (FormatException)
-            {
-                Console.WriteLine("Error: Invalid format entered.");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                    break;
+
+                    
+                }
+                catch (InvalidInputException ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                catch (KeyNotFoundException ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Error: Invalid format entered.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+                }
             }
         }
         static void DisplayBoardingGates(Dictionary<string, BoardingGate> boardingGates)
