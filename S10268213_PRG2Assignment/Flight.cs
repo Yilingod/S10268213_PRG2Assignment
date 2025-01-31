@@ -29,7 +29,7 @@ namespace S10268213_PRG2Assignment
             ExpectedTime = expectedtime;
             Status = "Scheduled";
 
-            if (requestcode is null)
+            if (requestcode == "")
             {
                 SpecialRequestCode = "None";
             }
