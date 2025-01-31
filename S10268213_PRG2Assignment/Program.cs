@@ -327,20 +327,21 @@ namespace HelloWorld
                     Flight NewFlight;
                     if (requestCode == "DDJB")
                     {
-                        NewFlight = new DDJBFlight(FlightNo, origin, destination, expectedTime);
+                        NewFlight = new DDJBFlight(FlightNo, origin, destination, expectedTime,requestCode);
                     }
                     else if (requestCode == "CFFT")
                     {
-                        NewFlight = new CFFTFlight(FlightNo, origin, destination, expectedTime);
+                        NewFlight = new CFFTFlight(FlightNo, origin, destination, expectedTime,requestCode);
                     }
                     else if (requestCode == "LWTT")
                     {
-                        NewFlight = new LWTTFlight(FlightNo, origin, destination, expectedTime);
+                        NewFlight = new LWTTFlight(FlightNo, origin, destination, expectedTime,requestCode);
                     }
                     else if(requestCode == "None")
                     {
-                        NewFlight = new NORMFlight(FlightNo, origin, destination, expectedTime);
                         requestCode = null;
+                        NewFlight = new NORMFlight(FlightNo, origin, destination, expectedTime,requestCode);
+                        
                     }
                     else
                     {
@@ -564,22 +565,22 @@ namespace HelloWorld
 
                     if (request_code == "DDJB")
                     {
-                        Flight flight = new DDJBFlight(flightnumber, origin, destination, expectedtime);
+                        Flight flight = new DDJBFlight(flightnumber, origin, destination, expectedtime,request_code);
                         flights[flightnumber] = flight;
                     }
                     else if (request_code == "CFFT")
                     {
-                        Flight flight = new CFFTFlight(flightnumber, origin, destination, expectedtime);
+                        Flight flight = new CFFTFlight(flightnumber, origin, destination, expectedtime,request_code);
                         flights[flightnumber] = flight;
                     }
                     else if (request_code == "LWTT")
                     {
-                        Flight flight = new LWTTFlight(flightnumber, origin, destination, expectedtime);
+                        Flight flight = new LWTTFlight(flightnumber, origin, destination, expectedtime, request_code);
                         flights[flightnumber] = flight;
                     }
                     else
                     {
-                        Flight flight = new NORMFlight(flightnumber, origin, destination, expectedtime);
+                        Flight flight = new NORMFlight(flightnumber, origin, destination, expectedtime, request_code);
                         flights[flightnumber] = flight;
                     }
                     flightNum++;

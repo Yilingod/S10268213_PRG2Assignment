@@ -15,7 +15,7 @@ namespace S10268213_PRG2Assignment
         public double RequestFee { get; set; }
 
         public CFFTFlight() : base() { }
-        public CFFTFlight(string flightnumber, string origin, string destination, DateTime expectedtime) : base(flightnumber, origin, destination, expectedtime)
+        public CFFTFlight(string flightnumber, string origin, string destination, DateTime expectedtime,string requestcode) : base(flightnumber, origin, destination, expectedtime, requestcode)
         {
             RequestFee = 150;
         }
