@@ -13,8 +13,10 @@ namespace S10268213_PRG2Assignment
 {
     class NORMFlight : Flight
     {
+
+
         public NORMFlight() : base() { }
-        public NORMFlight(string flightnumber, string origin, string destination, DateTime expectedtime) : base(flightnumber, origin, destination, expectedtime)
+        public NORMFlight(string flightnumber, string origin, string destination, DateTime expectedtime,string requestcode) : base(flightnumber, origin, destination, expectedtime,requestcode)
         {
 
         }

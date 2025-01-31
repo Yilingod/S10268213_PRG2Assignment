@@ -17,14 +17,28 @@ namespace S10268213_PRG2Assignment
         public string Destination { get; set; }
         public DateTime ExpectedTime { get; set; }
         public string Status { get; set; }
+        public string SpecialRequestCode { get; set; }
+        public string AirlineCode { get; set; }
+        public BoardingGate BoardingGateAssigned { get; set; } = null;
         public Flight() { }
-        public Flight(string flightnumber,string origin,string destination,DateTime expectedtime)
+        public Flight(string flightnumber,string origin,string destination,DateTime expectedtime,string requestcode)
         {
             FlightNumber = flightnumber;
             Origin = origin;
             Destination = destination;
             ExpectedTime = expectedtime;
             Status = "Scheduled";
+
+            if (requestcode == "")
+            {
+                SpecialRequestCode = "None";
+            }
+            else
+            {
+                SpecialRequestCode = requestcode;
+            }
+
+            AirlineCode = flightnumber.Substring(0, 2);
 
         }
         public int CompareTo(Flight other)
