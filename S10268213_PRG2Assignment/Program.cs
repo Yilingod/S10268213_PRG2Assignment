@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq.Expressions;
 using Microsoft.VisualBasic;
 using System.Collections.Immutable;
+using System.Xml;
 
 //==========================================================
 // Student Number	: S10268213K
@@ -73,6 +74,10 @@ namespace HelloWorld
                 {
                     DisplayFlightSchedule(flights,airlines,boardingGates);
                 }
+                else if (option == "8")
+                {
+                    AssignAllFlightToGate(flights, boardingGates);
+                }
                 else if (option == "0")
                 {
                     break;
@@ -86,6 +91,52 @@ namespace HelloWorld
         public class InvalidInputException : Exception
         {
             public InvalidInputException(string message) : base(message) { }
+        }
+
+        static void AssignAllFlightToGate(Dictionary<string, Flight> flights, Dictionary<string, BoardingGate> boardingGates)
+        {
+            Queue<Flight> FlightQueue = new Queue<Flight>();
+
+            foreach (Flight flight in flights.Values)
+            {
+                if (!boardingGates.Values.Any(gate => gate.Flight == flight))
+                {
+                    FlightQueue.Enqueue(flight);
+                }
+            }
+            Console.WriteLine($"Total of {FlightQueue.Count()} Flights are not assign to boarding gate.");
+
+            List<BoardingGate> UnassignedGates = new List<BoardingGate>();
+
+            foreach (BoardingGate gate in boardingGates.Values)
+            {
+                if (gate.Flight is null)
+                {
+                    UnassignedGates.Add(gate);
+                }
+            }
+
+            Console.WriteLine($"Total of {UnassignedGates.Count()} boarding gates are not assign with any flight .");
+
+            foreach (Flight flight in FlightQueue.ToList())
+            {
+                Type requestcode = flight.GetType();
+
+                Console.WriteLine(requestcode);
+
+
+                //foreach (BoardingGate gate in UnassignedGates)
+                //{
+                //    if (gate.Flight.GetType() == Type.GetType(requestcode) )
+                //    {
+
+                //    }
+                //}
+
+
+                //Console.WriteLine(  $"{flight.FlightNumber}");
+                FlightQueue.Dequeue();
+            }
         }
         static void DisplayFlightSchedule(Dictionary<string, Flight> flights, Dictionary<string, Airline> airlines, Dictionary<string, BoardingGate> boardingGates)
         {
