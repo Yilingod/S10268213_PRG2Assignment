@@ -64,7 +64,7 @@ namespace HelloWorld
                 }
                 else if (option == "5")
                 {
-                    ;
+                    DisplayAirlineFlights(airlines);
                 }
                 else if (option == "6")
                 {
@@ -193,6 +193,39 @@ namespace HelloWorld
             Console.WriteLine("Finished Assigning.");
             
         }
+
+        static void DisplayAirlineFlights(Dictionary<string, Airline> airlines)
+        {
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Airlines for Changi Airport Terminal 5");
+            Console.WriteLine("=============================================");
+            Console.WriteLine();
+
+            Console.WriteLine($"{"Airline Code",-15}{"Airline Name"}");
+            foreach (Airline airline in airlines.Values)
+            {
+                Console.WriteLine($"{airline.Code,-15}{airline.Name}");
+            }
+            Console.Write("Enter Airline Code: ");
+            string AirlineCode = Console.ReadLine();
+
+            Console.WriteLine("=============================================");
+            Console.WriteLine("List of Flights for Singapore Airlines");
+            Console.WriteLine("=============================================");
+
+            Console.WriteLine($"{"Flight Number",-15}{"Airline Name",-25}{"Origin",-25}{"Destination",-22}{"Expected Departure/Arrival Time"}");
+            Console.WriteLine();
+
+            foreach (Flight flight in airlines[AirlineCode].Flights.Values)
+            {
+                Console.WriteLine($"{flight.FlightNumber,-15}{airlines[AirlineCode].Name,-25}{flight.Origin,-25}" +
+                    $"{flight.Destination,-22}{flight.ExpectedTime}");
+
+            }
+
+
+        }
+
         static void CreateNewFlight(Dictionary<string, Flight> flights)
         {
             while (true)
