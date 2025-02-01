@@ -38,14 +38,43 @@ namespace S10268213_PRG2Assignment
             return false;
             
         }
-        //public double CalculateFees()
-        //{
 
-        //}
-        //public bool RemoveFlight(Flight flight)
-        //{
+        public double CalculateFees()
+        {
+            double totalFee = 0;
 
-        //}
+            foreach (var flight in Flights.Values)
+            {
+                // Base fee logic from the assignment
+                totalFee += (flight.Origin == "Singapore (SIN)" ? 800 : 500); // Departing: $800, Arriving: $500
+                totalFee += 300; // Boarding gate base fee
+
+                // Additional special request fees
+                switch (flight.SpecialRequest)
+                {
+                    case "DDJB":
+                        totalFee += 300;
+                        break;
+                    case "CFFT":
+                        totalFee += 150;
+                        break;
+                    case "LWTT":
+                        totalFee += 500;
+                        break;
+                }
+            }
+
+            return totalFee;
+        }
+        public bool RemoveFlight(Flight flight)
+        {
+            if (Flights.ContainsKey(flight.FlightNumber))
+            {
+                Flights.Remove(flight.FlightNumber);
+                return true;
+            }
+            return false;
+        }
         //public override string ToString()
         //{
 

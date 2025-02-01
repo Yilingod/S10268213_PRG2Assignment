@@ -85,6 +85,10 @@ namespace HelloWorld
                     //ADVANCED  FEATURES (a)
                     AssignAllFlightToGate(flights, boardingGates,airlines);
                 }
+                else if (option == "9")
+                {
+                    CalculateFeesForAirlines(airlines, flights);
+                }
                 else if (option == "0")
                 {
                     break;
@@ -254,6 +258,66 @@ namespace HelloWorld
             }
             Console.WriteLine("Finished Assigning.");
             
+        }
+
+        static void CalculateFeesForAirlines(Dictionary<string, Airline> airlines, Dictionary<string, Flight> allFlights)
+        {
+            if (allFlights.Values.Any(f => f.BoardingGateAssigned == null))
+            {
+                Console.WriteLine("Error: All flights must have boarding gates assigned first!");
+                return;
+            }
+
+            foreach (var airline in airlines.Values)
+            {
+                double subtotalFees = 0;
+                double subtotalDiscounts = 0;
+                int flightCount = airline.Flights.Count;
+
+                foreach (var flight in airline.Flights.Values)
+                {
+                    // 1. Base Flight Fee
+                    double baseFee = flight.Origin.Contains("(SIN)") ? 800 : 500;
+
+                    // 2. Boarding Gate Base Fee
+                    baseFee += 300;
+
+                    // 3. Special Request Fees
+                    if (flight is DDJBFlight) baseFee += 300;
+                    else if (flight is CFFTFlight) baseFee += 150;
+                    else if (flight is LWTTFlight) baseFee += 500;
+
+                    subtotalFees += baseFee;
+
+                    //Calculate Discounts
+                    // Time-based discount
+                    if (flight.ExpectedTime.Hour < 11 || flight.ExpectedTime.Hour >= 21)
+                        subtotalDiscounts += 110;
+
+                    // Origin discount
+                    if (flight.Origin.Contains("(DXB)") ||
+                        flight.Origin.Contains("(BKK)") ||
+                        flight.Origin.Contains("(NRT)"))
+                        subtotalDiscounts += 25;
+
+                    // No special request discount
+                    if (flight.SpecialRequestCode == "None")
+                        subtotalDiscounts += 50;
+                }
+
+                // 5. Promotional Discounts
+                // Every 3 flights discount
+                subtotalDiscounts += (flightCount / 3) * 350;
+
+                // Large airline discount (3% of SUBTOTAL before other discounts)
+                if (flightCount > 5)
+                    subtotalDiscounts += subtotalFees * 0.03;
+
+                Console.WriteLine($"\n{airline.Name.ToUpper()}");
+                Console.WriteLine($"{"Subtotal Fees:",-25}{subtotalFees,15:C}");
+                Console.WriteLine($"{"Total Discounts:",-25}{subtotalDiscounts,15:C}");
+                Console.WriteLine($"{"Final Amount Due:",-25}{subtotalFees - subtotalDiscounts,15:C}");
+            }
         }
 
         static void ModifyFlightDetails(Dictionary<string, Airline> airlines)

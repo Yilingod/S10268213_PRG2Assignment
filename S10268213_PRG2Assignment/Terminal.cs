@@ -28,14 +28,25 @@ namespace S10268213_PRG2Assignment
             GateFees = gateFees;
 
         }
-        //public bool AddAirline(Airline airline)
-        //{
+        public bool AddAirline(Airline airline)
+        {
+            if (!Airlines.ContainsKey(airline.Code))
+            {
+                Airlines[airline.Code] = airline;
+                return true;
+            }
+            return false;
+        }
 
-        //}
-        //public bool AddBoardingGate()
-        //{
-
-        //}
+        public bool AddBoardingGate(BoardingGate gate)
+        {
+            if (!BoardingGates.ContainsKey(gate.GateName))
+            {
+                BoardingGates[gate.GateName] = gate;
+                return true;
+            }
+            return false;
+        }
 
     }
 }
