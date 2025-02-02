@@ -363,7 +363,7 @@ namespace HelloWorld
             }
 
             // Choose action
-            Console.WriteLine("\n[1] Modify Flight\n[2] Delete Flight");
+            Console.WriteLine("\n1. Modify Flight\n2. Delete Flight");
             Console.Write("Choose option: ");
             switch (Console.ReadLine())
             {
@@ -383,7 +383,7 @@ namespace HelloWorld
                                 Dictionary<string, BoardingGate> boardingGates)
         {
             Console.WriteLine("\nModification Options:");
-            Console.WriteLine("1. Basic Information\n2. Status\n3. Special Request\n4. Boarding Gate");
+            Console.WriteLine("1.Modify Basic Information\n2. Modify Status\n3. Modify Special Request Code\n4.Modify Boarding Gate");
             Console.Write("Choose option: ");
 
             switch (Console.ReadLine())
@@ -422,7 +422,7 @@ namespace HelloWorld
                 Console.Write("Enter new Expected Time (dd/MM/yyyy HH:mm): ");
                 flight.ExpectedTime = DateTime.ParseExact(
                     Console.ReadLine(),
-                    "dd/MM/yyyy HH:mm",
+                    "dd/M/yyyy HH:mm",
                     System.Globalization.CultureInfo.InvariantCulture
                 );
 
@@ -956,6 +956,8 @@ namespace HelloWorld
             Console.WriteLine("5. Display Airline Flights");
             Console.WriteLine("6. Modify Flight Details");
             Console.WriteLine("7. Display Flight Schedule");
+            Console.WriteLine("8. Process all unassigned flights to boarding gates in bulk");
+            Console.WriteLine("9. Display the total fee per airline for the day");
             Console.WriteLine("0. Exit");
             Console.WriteLine();
             Console.Write("Please select your option: ");
