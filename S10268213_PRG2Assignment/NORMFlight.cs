@@ -24,10 +24,10 @@ namespace S10268213_PRG2Assignment
         {
             return base.CalculateFees() - 50;
         }
-        //    public override string ToString()
-        //    {
-
-        //    }
+        public override string ToString()
+        {
+            return base.ToString();
+        }
 
 
     }

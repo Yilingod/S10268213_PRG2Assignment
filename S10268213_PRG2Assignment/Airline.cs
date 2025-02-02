@@ -45,22 +45,13 @@ namespace S10268213_PRG2Assignment
 
             foreach (var flight in Flights.Values)
             {
-                // Base fee logic from the assignment
-                totalFee += (flight.Origin == "Singapore (SIN)" ? 800 : 500); // Departing: $800, Arriving: $500
-                totalFee += 300; // Boarding gate base fee
-
-                // Additional special request fees
-                switch (flight.SpecialRequest)
+                if (flight.Destination == "Singapore (SIN)")
                 {
-                    case "DDJB":
-                        totalFee += 300;
-                        break;
-                    case "CFFT":
-                        totalFee += 150;
-                        break;
-                    case "LWTT":
-                        totalFee += 500;
-                        break;
+                    totalFee += 500; // Arriving flight fee
+                }
+                else if (flight.Origin == "Singapore (SIN)")
+                {
+                    totalFee += 800; // Departing flight fee
                 }
             }
 
@@ -75,10 +66,10 @@ namespace S10268213_PRG2Assignment
             }
             return false;
         }
-        //public override string ToString()
-        //{
-
-        //}
+        public override string ToString()
+        {
+            return $"Name: {Name}\t Code: {Code}";
+        }
 
 
     }

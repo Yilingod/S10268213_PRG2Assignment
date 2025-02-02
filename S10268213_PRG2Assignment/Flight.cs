@@ -74,9 +74,9 @@ namespace S10268213_PRG2Assignment
         }
 
 
-        //public override string ToString()
-        //{
-        //    return $"Flight Number:{FlightNumber}   Origin:{Origin}   Destination:{Destination}  Expected Time:{ExpectedTime}  Status:{Status}";
-        //}
+        public override string ToString()
+        {
+            return $"Flight Number:{FlightNumber}   Origin:{Origin}   Destination:{Destination}  Expected Time:{ExpectedTime}  Status:{Status}";
+        }
     }
 }

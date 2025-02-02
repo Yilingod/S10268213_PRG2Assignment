@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 //==========================================================
 // Student Number	: S10268213K
 // Student Name	: Gong Yilin
@@ -26,13 +27,14 @@ namespace S10268213_PRG2Assignment
             SupportLWTT = slwtt;
 
         }
-        //public double CalculateFees()
-        //{
-
-        //}
-        //public override string ToString()
-        //{
-
-        //}
+        public double CalculateFees()
+        {
+            double GateFee = 300;
+            return GateFee;
+        }
+        public override string ToString()
+        {
+            return $"Gate Name: {GateName}\t DDJB: {SupportDDJB}\t CFFT:{SupportsCFFT}\t LWTT: {SupportLWTT}";
+        }
     }
 }
